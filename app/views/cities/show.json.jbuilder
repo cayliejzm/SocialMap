@@ -1,1 +1,1 @@
-json.extract! @city, :id, :name, :country, :city_code, :latitude, :longitude, :created_at, :updated_at
+json.extract! @city, :id, :name, :country, :city_code, :latitude, :longitude, :woeid,  :foodTweetLength, :nightTweetLength, :healthTweetLength

@@ -20,11 +20,13 @@ d3.json("<%= asset_path 'world-110m2.json' %>", function(error, topology) { // A
 // d3.csv("cities.csv", function(error, data) {
 $.ajax('http://localhost:3000/cities.json').done(function(data){
   console.log( data );
+  // debugger
     g.selectAll("circle")
        .data(data)
        .enter()
        .append("a")
           .attr("xlink:href", function(d) {
+            // debugger
             return "http://localhost:3000/cities/"+d.id;}
           )
        .append("circle")
@@ -34,15 +36,43 @@ $.ajax('http://localhost:3000/cities.json').done(function(data){
        .attr("cy", function(d) {
                return projection([d.longitude, d.latitude])[1];
        })
-       .attr("r", 5)
-       .style("fill", "hotpink");
-});
+       .attr("r", (function(d){ return d.foodTweetLength }) )
+       .style("fill", "black");
 
+
+// foodtweetlength :integer,
+// @foodtweetlength =
+
+// add food, night, health values into cities table
+//declare global variables in cities controller show and index
+//make a rake task  -- for every city in database, send off request for each city at once instead of loading
+//use global variables in map.js.erb as representation of pixel size "@foodlength"
+
+    // g.selectAll("circle")
+    //   .data( data )
+    //   .enter()
+    //   .append("a")
+    //     .attr("xlink:href", function(d) {
+    //       return "http://localhost:3000/cities/"+d.id;}
+    //     )
+    //   .append("circle")
+    //   .attr("cx", function(d) {
+    //     // debugger
+    //           return projection([(d.longitude + 1), (d.latitude + 1)])[0];
+    //   })
+    //   .attr("cy", function(d) {
+    //           return projection([d.longitude - 0.5, d.latitude -0.5])[1];
+    //   })
+    //   .attr("r", 5)
+    //   .style("fill", "green");
+      // debugger
+
+});
 
 g.selectAll("path")
       .data(topojson.object(topology, topology.objects.countries)
           .geometries)
-    .enter()
+      .enter()
       .append("path")
       .attr("d", path)
 });

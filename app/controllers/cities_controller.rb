@@ -1,39 +1,62 @@
 class CitiesController < ApplicationController
-  before_action :set_city, only: [:show, :edit, :update, :destroy]
+  before_action :authorise, :set_city, only: [:show, :edit, :update, :destroy]
 
-  # GET /cities
-  # GET /cities.json
   def index
     @cities = City.all
-
   end
 
-  # GET /cities/1
-  # GET /cities/1.json
   def show
     @city = City.find params[:id]
+    # @trends = @client.trends( @city.woeid )
 
-    client = Twitter::REST::Client.new do |config|
-      config.consumer_key = 'h3nGJHkx3mpYPorGTuFaphves'
-      config.consumer_secret = '8zCRdna7x0CFdrlG9rtkp9j2PApGJF4zrUh4k9hK4mOnT7YMLl'
-      config.access_token = '3128393300-E2tM8ivNFbRSrbAh1hIZnO1Yulw9FBbEQChIqzS'
-      config.access_token_secret = 'Jac4U4j9AgtjwwSzsY6QDb8lFnFV1BROEvQOSjItPak5J'
-    end
-    @trends = client.trends( @city.woeid )
+    # @foodTweets = []
+    # tweet_array = ["#food", "#delicious", "#culinary", "#restaurant"]
+    # tweet_array.each do | t |
+    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
+    #   tresult.to_hash[:statuses].each do | tr |
+    #     @foodTweets << tr[:text]
+    #   end
+    # end
 
+    # @city.foodTweets = @foodTweetLength
+    # @city.foodTweetLength = @foodTweets.length
+    @foodTweetLength = @city.foodTweetLength
+    @city.save
+    # raise
+
+
+    # @nightTweets = []
+    # tweet_array = ["#bar", "#club", "#dance", "#drink", "#party", "#all-night"]
+    # tweet_array.each do |t|
+    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
+    #   tresult.to_hash[:statuses].each do |tr|
+    #     @nightTweets << tr[:text]
+    #   end
+    # end
+    #
+    # @nightTweetLength = @nightTweets.length
+    #
+    # @healthTweets = []
+    # tweet_array = ["#gym", "#health", "#yoga", "#organic", "#run", "#fitness"]
+    # tweet_array.each do |t|
+    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
+    #   tresult.to_hash[:statuses].each do |tr|
+    #     @healthTweets << tr[:text]
+    #   end
+    # end
+
+    # @healthTweetLength = @healthTweets.length
   end
 
-  # GET /cities/new
+
   def new
     @city = City.new
   end
 
-  # GET /cities/1/edit
   def edit
   end
 
-  # POST /cities
-  # POST /cities.json
+
   def create
     @city = City.new(city_params)
 
@@ -48,8 +71,7 @@ class CitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /cities/1
-  # PATCH/PUT /cities/1.json
+
   def update
     respond_to do |format|
       if @city.update(city_params)
@@ -62,8 +84,7 @@ class CitiesController < ApplicationController
     end
   end
 
-  # DELETE /cities/1
-  # DELETE /cities/1.json
+
   def destroy
     @city.destroy
     respond_to do |format|
@@ -73,13 +94,20 @@ class CitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def authorise
+      @client = Twitter::REST::Client.new do |config|
+        config.consumer_key = 'h3nGJHkx3mpYPorGTuFaphves'
+        config.consumer_secret = '8zCRdna7x0CFdrlG9rtkp9j2PApGJF4zrUh4k9hK4mOnT7YMLl'
+        config.access_token = '3128393300-E2tM8ivNFbRSrbAh1hIZnO1Yulw9FBbEQChIqzS'
+        config.access_token_secret = 'Jac4U4j9AgtjwwSzsY6QDb8lFnFV1BROEvQOSjItPak5J'
+      end
+    end
+
     def set_city
       @city = City.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def city_params
-      params.require(:city).permit(:name, :country, :city_code, :latitude, :longitude)
+      params.require(:city).permit(:name, :country, :city_code, :latitude, :longitude, :woeid,  :foodTweetLength, :nightTweetLength, :healthTweetLength)
     end
 end
