@@ -33,8 +33,11 @@
     padding-top: 60px;
  }
 
- path {
+.thumbnail {
+  max-width: 200px;
+}
+ /*path {
    stroke: white;
    stroke-width: 0.5px;
    fill: gainsboro;
- }
+ }*/

@@ -7,45 +7,38 @@ class CitiesController < ApplicationController
 
   def show
     @city = City.find params[:id]
-    # @trends = @client.trends( @city.woeid )
+    @trends = @client.trends( @city.woeid )
 
-    # @foodTweets = []
-    # tweet_array = ["#food", "#delicious", "#culinary", "#restaurant"]
-    # tweet_array.each do | t |
-    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
-    #   tresult.to_hash[:statuses].each do | tr |
-    #     @foodTweets << tr[:text]
-    #   end
-    # end
+    @foodTweets = []
+    tweet_array = ["#food", "#delicious", "#culinary", "#restaurant"]
+    tweet_array.each do | t |
+      tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now, :count => 10).take(10)
+      tresult.each do | tr |
+        @foodTweets << tr[:text]
+      end
+    end
 
-    # @city.foodTweets = @foodTweetLength
-    # @city.foodTweetLength = @foodTweets.length
-    @foodTweetLength = @city.foodTweetLength
-    @city.save
-    # raise
+    @nightTweets = []
+    tweet_array = ["#bar", "#club", "#dance", "#drink", "#party", "#all-night"]
+    tweet_array.each do |t|
+      tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now, :count => 10).take(10)
+      tresult.each do |tr|
+        @nightTweets << tr[:text]
+      end
+    end
 
+    @nightTweetLength = @nightTweets.length
 
-    # @nightTweets = []
-    # tweet_array = ["#bar", "#club", "#dance", "#drink", "#party", "#all-night"]
-    # tweet_array.each do |t|
-    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
-    #   tresult.to_hash[:statuses].each do |tr|
-    #     @nightTweets << tr[:text]
-    #   end
-    # end
-    #
-    # @nightTweetLength = @nightTweets.length
-    #
-    # @healthTweets = []
-    # tweet_array = ["#gym", "#health", "#yoga", "#organic", "#run", "#fitness"]
-    # tweet_array.each do |t|
-    #   tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now)
-    #   tresult.to_hash[:statuses].each do |tr|
-    #     @healthTweets << tr[:text]
-    #   end
-    # end
+    @healthTweets = []
+    tweet_array = ["#gym", "#health", "#yoga", "#organic", "#run", "#fitness"]
+    tweet_array.each do |t|
+      tresult = @client.search(t, :woeid => @city.woeid, :since_id => Time.now, :count => 10).take(10)
+      tresult.each do |tr|
+        @healthTweets << tr[:text]
+      end
+    end
 
-    # @healthTweetLength = @healthTweets.length
+    @healthTweetLength = @healthTweets.length
   end
 
 

@@ -1,9 +1,8 @@
+<h2><%= @city.name %></h2>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @city.name %>
-</p>
+<p><img src=<%=@city.image %> class= "thumbnail"></p>
 
 <p>
   <strong>Country:</strong>
@@ -23,4 +22,48 @@
 <p>
   <strong>Longitude:</strong>
   <%= @city.longitude %>
+</p>
+<p>
+  <strong>Twitter Trends:</strong>
+  <ul>
+  <% @trends.take(10).each do |t| %>
+    <li>
+      <%= t.name  %>
+    </li>
+  <% end %>
+  </ul>
+</p>
+
+
+<p>
+  <strong>Food</strong>
+  <ul>
+    <% @foodTweets.take(10).each do |t| %>
+      <li>
+        <%= t %>
+      </li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
+  <strong>Night Life</strong>
+  <ul>
+    <% @nightTweets.take(10).each do |t| %>
+    <li>
+      <%= t %>
+    </li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
+  <strong>Health</strong>
+  <ul>
+    <% @healthTweets.take(10).each do |t| %>
+    <li>
+      <%= t %>
+    </li>
+    <% end %>
+  </ul>
 </p>

@@ -43,12 +43,6 @@ namespace :city do
         end
       end # end health
 
-      c.foodTweetLength = foodTweets.length
-      c.healthTweetLength = healthTweets.length
-      c.nightTweetLength = nightTweets.length
-
-      c.save
-
     end
 
   end
